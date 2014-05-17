@@ -1,0 +1,65 @@
+<h1><%= @post.title %></h1>
+
+<p><%= @post.content %></p>
+
+<h2>Comments</h2>
+<ul>
+
+<%#存在のチェック%>
+<% if @post.comments.any? %>
+
+<% @post.comments.each do |comment| %>
+<li id ="comment_<%= comment.id %>">
+<%= comment.body %> (by <%= comment.commenter %>)
+<%#[comment.post,comment]: 渡すオブジェクト  %>
+<%= link_to 'delete',[comment.post,comment],:confirm => 'Sure?',:method => :delete,:remote => true %>
+</li>
+<% end %>
+<% else %>
+<li>no comment yet.</li>
+<% end %>
+</ul>
+
+
+<h2>Add a comment</h2>
+<%= form_for([@post,@comment]) do |f| %>		<%# formの決まり文句として覚える%>
+<%#[@post,@comment] : postにひもづいたコメントの書き方 %>
+
+<% if @comment.errors.any? %>
+<ul>
+<% @comment.errors.full_messages.each do |msg| %>
+<li><%= msg %></li>
+<% end %>
+</ul>
+<% end %>
+
+<div class = "field">				<%#テキストフィールド%>
+	<%= f.label :commenter %>			<%#ラベル%>
+	<%= f.text_field :commenter %>		<%#text_field: 1行%>
+</div>
+
+<div class = "field">				<%#コンテントフィールド%>
+	<%= f.label :body %>			<%#ラベル%>
+	<%= f.text_area :body, :rows => 5 %>		<%#text_area: 複数行,optionはカンマ区切りで記述する%>
+</div>
+
+<div class = "action">	　			<%# 送信ボタン%>
+	<%= f.submit %>
+</div>
+
+<% end%>
+
+<%= link_to 'home',posts_path %>
+
+<script>
+$(function(){
+	$('a[data-method = "delete"]').on('ajax:success',function(e,data,status,xhr){
+		$('#comment_'+data.comment.id).fadeOut("slow");
+	});
+});
+</script>
+
+
+
+
+

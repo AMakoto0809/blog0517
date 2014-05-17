@@ -1,0 +1,27 @@
+<%= form_for(@post) do |f| %>		<%# formの決まり文句として覚える%>
+
+<%# lesson#28でつまづいた場所%>
+<% if @post.errors.any? %>
+<ul>
+<% @post.errors.full_messages.each do |msg| %>
+<li><%= msg %></li>
+<% end %>
+</ul>
+<% end %>
+
+
+<div class = "field">				<%#テキストフィールド%>
+	<%= f.label :title %>			<%#ラベル%>
+	<%= f.text_field :title %>		<%#text_field: 1行%>
+</div>
+
+<div class = "field">				<%#コンテントフィールド%>
+	<%= f.label :content %>			<%#ラベル%>
+	<%= f.text_area :content, :rows => 5 %>		<%#text_area: 複数行,optionはカンマ区切りで記述する%>
+</div>
+
+<div class = "action">	　			<%# 送信ボタン%>
+	<%= f.submit %>
+</div>
+
+<% end%>
